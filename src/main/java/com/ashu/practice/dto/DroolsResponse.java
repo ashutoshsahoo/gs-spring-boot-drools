@@ -9,4 +9,5 @@ public class DroolsResponse {
     private Integer marksObtained;
     private Integer total;
     private Double percentage;
+    private Student student;
 }

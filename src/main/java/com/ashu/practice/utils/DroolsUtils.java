@@ -1,5 +1,6 @@
 package com.ashu.practice.utils;
 
+import com.ashu.practice.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -13,32 +14,33 @@ import org.springframework.stereotype.Component;
 public class DroolsUtils {
 
     private final KieContainer kieContainer;
+    private final StudentService studentService;
 
     /**
      * This method executes 2 param rule engine
      */
-    public <T, K> T executeRuleEngine(T score, K request, String session) {
+    public <T, K> T executeRuleEngine(T response, K request, String session) {
         try (KieSession kieSession = kieContainer.newKieSession(session)) {
-            kieSession.insert(score);
+            kieSession.setGlobal("studentService", studentService);
+            kieSession.insert(response);
             kieSession.insert(request);
             kieSession.fireAllRules();
-//            kieSession.dispose();
         }
-        return score;
+        return response;
     }
 
     /**
      * This method executes 3 param rule engine
      */
-    public <T, K, M> T executeRuleEngine(T score, K request, M threshold, String session) {
+    public <T, K, M> T executeRuleEngine(T response, K request, M threshold, String session) {
         try (KieSession kieSession = kieContainer.newKieSession(session)) {
-            kieSession.insert(score);
+            kieSession.setGlobal("studentService", studentService);
+            kieSession.insert(response);
             kieSession.insert(request);
             kieSession.insert(threshold);
             kieSession.fireAllRules();
-//            kieSession.dispose();
         }
-        return score;
+        return response;
     }
 
 }

@@ -2,8 +2,12 @@ package com.ashu.practice.rules;
 
 import com.ashu.practice.dto.DroolsRequest;
 import com.ashu.practice.dto.DroolsResponse;
+import com.ashu.practice.dto.Student;
+import com.ashu.practice.service.StudentService;
 import org.springframework.util.CollectionUtils;
 import com.ashu.practice.dto.DroolsRequest.DataSet;
+
+global StudentService studentService;
 
 rule "Calculate Total"
 	salience 99
@@ -62,4 +66,15 @@ rule "Calculate Grade"
             grade = "F";
         }
         $response.setGrade(grade);
+end
+
+rule "Fetch student details"
+	salience -100
+	activation-group "Rule 4"
+    when
+        $response: DroolsResponse();
+        $request: DroolsRequest( null != studentId );
+    then
+        Student student = studentService.fetchDetails($request.getStudentId());
+        $response.setStudent(student);
 end

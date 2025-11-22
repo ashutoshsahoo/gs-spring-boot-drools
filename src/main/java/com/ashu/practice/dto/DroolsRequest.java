@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class DroolsRequest {
+    private Integer studentId;
     private List<DataSet> marksheet;
 
     /**
